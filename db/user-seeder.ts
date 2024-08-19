@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { UserFactory } from './user-factory';
+import {SeededUserFactory} from './user-factory';
 import * as bcrypt from 'bcrypt';
 import { User } from '../src/entity/user.entity';
 
@@ -16,13 +16,13 @@ export class UserSeeder {
   async seed() {
     //seeding 10 admin
     for (let i = 0; i < 10; i++) {
-      const adminUser = UserFactory.createUser(i, 'admin');
+      const adminUser = SeededUserFactory.createSeededUser(i, 'admin');
       await this.createUser(adminUser);
     }
 
     //seeding 10 user biasa
     for (let i = 0; i < 10; i++) {
-      const regularUser = UserFactory.createUser(i, 'regular');
+      const regularUser = SeededUserFactory.createSeededUser(i, 'regular');
       await this.createUser(regularUser);
     }
 

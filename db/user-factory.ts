@@ -1,4 +1,4 @@
-export class GenerateUser {
+export class GeneratedUser {
   private username: string;
   private email: string;
   private password: string;
@@ -15,24 +15,24 @@ export class GenerateUser {
   }
 }
 
-export class GeneratedAdmin extends GenerateUser {
+export class SeededAdmin extends GeneratedUser {
   constructor(index:number) {
     super(`admin${index}`,`admin${index}@admin.com`,"admin123","admin",`Administrator${index}`,`admin${index}`);
   }
 }
 
-export class GeneratedRegular extends GenerateUser {
+export class SeededRegular extends GeneratedUser {
   constructor(index:number) {
     super(`dummy${index}`,`dummy${index}@dummy.com`,"dummy123","regular",`Dummy${index}`,`dummy${index}`);
   }
 }
 //Design pattern: Factory method untuk seeding daftar user init
-export class UserFactory{
-  public static createUser(index: number, userType:string):GenerateUser {
+export class SeededUserFactory{
+  public static createSeededUser(index: number, userType:string):GeneratedUser {
     if(userType === "admin"){
-      return new GeneratedAdmin(index);
+      return new SeededAdmin(index);
     } else if(userType === "regular"){
-      return new GeneratedRegular(index);
+      return new SeededRegular(index);
     } else {
       throw new Error("Invalid user type");
     }

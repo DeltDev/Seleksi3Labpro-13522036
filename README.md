@@ -26,37 +26,38 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+
+## Cara menjalankan aplikasi (docker)
 
 ```bash
-$ npm install
+# Environment development
+$ docker-compose -f docker-compose.dev.yml up
+
+# Environment production
+$ docker-compose -f docker-compose.prod.yml up
 ```
-
-## Running the app
-
+## Kredensial Akun Default
+Terdapat 20 akun default hasil seeding saat program ini baru mulai dijalankan, 10 akun admin dan 10 akun user reguler.
+Berikut adalah kredensial akun seeding default untuk kebutuhan testing.
+<br>a. Kredensial akun admin<br>
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
+username: admin(angka 0 sampai 9 disambung tanpa spasi)
+password(sama semua untuk akun admin default): admin123
+email: admin(angka 0 sampai 9 disambung tanpa spasi)@admin.com
+ ```
+<br>b. Kredensial akun reguler
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
+username: dummy(angka 0 sampai 9 disambung tanpa spasi)
+password(sama semua untuk akun dummy default): dummy123
+email: dummy(angka 0 sampai 9 disambung tanpa spasi)@dummy.com
+ ```
+## Design Pattern yang Digunakan
+1. Factory Method (implementasi sendiri)
+    <br>Factory method digunakan untuk melakukan seeding user.
+2. Decorator (bawaan dari nestjs)
+    <br>Decorator di proyek ini digunakan untuk memberikan kegunaan dari suatu kelas ataupun method
+3. Strategy (bawaan dari nestjs)
+    <br> Strategy digunakan untuk menjaga route agar tidak bisa diakses secara sembarangan baik menggunakan JWT Token maupun role dari user.
 
 ## Support
 
