@@ -1,0 +1,65 @@
+services:
+  mysql_db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - '3307:3306'
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: >
+      sh -c 
+      "echo 'MySQL is ready, running migrations...';
+      npm run migration:generate -- db/migrations/NewMigrations;
+      npm run migration:run;
+      "
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+    volumes:
+      - .:/usr/www
+
+  nestjs_api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3001:3001'
+    environment:
+      - PORT=3001
+      - NODE_ENV=development
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+    volumes:
+      - ./src:/usr/www/src
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    command: npm run start:dev
+
+volumes:
+  db_data:
