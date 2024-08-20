@@ -1,3 +1,7 @@
+import { IsOptional, IsString } from 'class-validator';
+
 export class UserQueryDto {
-  q:string;
+  @IsOptional()
+  @IsString()
+  q?:string;
 }

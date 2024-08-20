@@ -1,4 +1,4 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Module, OnApplicationShutdown, OnModuleDestroy, OnModuleInit, Logger } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,7 +8,10 @@ import { FilmModule } from './film/film.module';
 import { dataSourceOptions } from '../db/data-source';
 import { UserSeeder } from '../db/user-seeder';
 import { UserService } from './user/user.service';
-
+import { MulterModule } from '@nestjs/platform-express';
+import * as fs from 'fs';
+import * as path from 'path';
+import { Film } from './entity/film.entity';
 
 
 @Module({
@@ -16,16 +19,24 @@ import { UserService } from './user/user.service';
   imports:[
     UserModule,
     TypeOrmModule.forRoot(dataSourceOptions),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User,Film]),
     AuthModule,
     FilmModule,
+    MulterModule.register({dest:'./uploads'}),
   ],
-  providers:[UserSeeder]
+  providers:[UserSeeder,UserService]
 })
-export class AppModule implements OnModuleInit {
-  constructor(private readonly userSeeder: UserSeeder) {}
+export class AppModule implements OnModuleInit{
+  private readonly logger = new Logger(AppModule.name);
+  constructor(
+    private readonly userSeeder: UserSeeder,
+    private readonly userService: UserService
+  ) {}
 
   async onModuleInit() {
-    await this.userSeeder.seed();
+    const userCount = await this.userService.countUsers();
+    if (userCount === 0) {
+      await this.userSeeder.seed();
+    }
   }
 }

@@ -39,7 +39,7 @@ export class UserService {
 
       return {
         status: 'success',
-        message: 'User retrieval successful',
+        message: `User retrieval successful %${userQueryDto}%`,
         data: plainToClass(UserResponseDto, users),
       };
     } catch (error) {
@@ -108,7 +108,7 @@ export class UserService {
   async getID(userId: string): Promise<GeneralResponseDto> {
     try {
       if (!userId) {
-        throw new Error('id is not valid');
+        throw new Error('UserID is not valid');
       }
       const user = await this.userRepository.findOne({ where: { id: userId } });
       if (!user) {
@@ -194,5 +194,9 @@ export class UserService {
 
   async comparePasswords(plainPassword: string, hashedPassword: string): Promise<boolean> {
     return bcrypt.compare(plainPassword, hashedPassword);
+  }
+
+  async countUsers(): Promise<number> {
+    return this.userRepository.count();
   }
 }
