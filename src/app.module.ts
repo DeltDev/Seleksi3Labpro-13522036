@@ -12,6 +12,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Film } from './entity/film.entity';
+import { S3Module } from './s3/s3.module';
 
 
 @Module({
@@ -22,7 +23,8 @@ import { Film } from './entity/film.entity';
     TypeOrmModule.forFeature([User,Film]),
     AuthModule,
     FilmModule,
-    MulterModule.register({dest:'./uploads'}),
+    MulterModule.register(),
+    S3Module,
   ],
   providers:[UserSeeder,UserService]
 })

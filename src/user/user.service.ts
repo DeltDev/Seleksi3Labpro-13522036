@@ -21,7 +21,7 @@ export class UserService {
   async getUsers(userQueryDto: UserQueryDto): Promise<GeneralResponseDto> {
     try {
       let users;
-      console.log(userQueryDto);
+      // console.log(userQueryDto);
       if (!userQueryDto.q) {
         users = await this.userRepository.find({ where: { role: 'regular' } });
       } else {

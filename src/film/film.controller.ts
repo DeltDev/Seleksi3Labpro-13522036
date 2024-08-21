@@ -20,12 +20,14 @@ import { FilmQueryDto } from './dto/film-query.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt.auth.guard';
 import { AdminGuard } from '../auth/guards/admin.guard';
 import { UpdateFilmDto } from './dto/update-film.dto';
+import { S3Service } from '../s3/s3.service';
 
 
 @Controller('films')
 @UseGuards(JwtAuthGuard, AdminGuard)
 export class FilmController {
-  constructor(private readonly filmService: FilmService) {}
+  constructor(private readonly filmService: FilmService,
+              private s3Service: S3Service,) {}
 
   //buat film baru melalui admin
   @Post()
@@ -33,14 +35,6 @@ export class FilmController {
     { name: 'video', maxCount: 1 },
     { name: 'cover_image', maxCount: 1 }
   ], {
-    storage: diskStorage({
-      destination: './src/public',
-      filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = extname(file.originalname);
-        cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
-      }
-    }),
     fileFilter: (req, file, cb) => {
       if (file.fieldname === 'video') {
         if (extname(file.originalname).toLowerCase() !== '.mp4') {
@@ -68,8 +62,16 @@ export class FilmController {
     if (!video) {
       throw new BadRequestException('Video is required');
     }
-    const videoUrl =`./src/public/${video.filename}`
-    const coverImageUrl = coverImage ? `./src/public/${coverImage.filename}` : null
+    const videoKey = `videos/${Date.now()}-${video.originalname}`;
+    const videoUrl = await this.s3Service.uploadFile(video, videoKey);
+    let coverImageUrl, coverImageKey;
+    if(coverImage){
+      coverImageKey = `images/${Date.now()}-${coverImage.originalname}`;
+      coverImageUrl = await this.s3Service.uploadFile(coverImage, coverImageKey);
+    } else {
+      coverImageUrl = null
+    }
+
     const film = await this.filmService.createFilm(
       createFilmDto,
       videoUrl,
@@ -98,13 +100,13 @@ export class FilmController {
 
   @Get()
   async getFilms(@Query() queryDto: FilmQueryDto): Promise<GeneralResponseDto>{
-    console.log(queryDto);
+    // console.log(queryDto);
     return this.filmService.getFilms(queryDto);
   }
 
   @Get('/:id')
   async getFilmFromID(@Param('id') id: string): Promise<GeneralResponseDto> {
-    console.log(id);
+    // console.log(id);
     return this.filmService.getFilmFromID(id);
   }
 
@@ -118,14 +120,6 @@ export class FilmController {
     { name: 'video', maxCount: 1 },
     { name: 'cover_image', maxCount: 1 }
   ], {
-    storage: diskStorage({
-      destination: './src/public',
-      filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = extname(file.originalname);
-        cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
-      }
-    }),
     fileFilter: (req, file, cb) => {
       if (file.fieldname === 'video') {
         if (extname(file.originalname).toLowerCase() !== '.mp4') {
@@ -150,9 +144,22 @@ export class FilmController {
   ): Promise<GeneralResponseDto> {
     const video = files.video ? files.video[0] : null;
     const coverImage = files.cover_image ? files.cover_image[0] : null;
-
-    const videoUrl = video ? `./src/public/${video.filename}` : null;
-    const coverImageUrl = coverImage ? `./src/public/${coverImage.filename}` : null;
+    let videoUrl;
+    let videoKey;
+    let coverImageUrl;
+    let coverImageKey;
+    if(video){
+      videoKey = `videos/${Date.now()}-${video.originalname}`;
+      videoUrl = await this.s3Service.uploadFile(video, videoKey);
+    } else {
+      videoUrl = null
+    }
+    if(coverImage){
+      coverImageKey = `images/${Date.now()}-${coverImage.originalname}`;
+      coverImageUrl = await this.s3Service.uploadFile(coverImage, coverImageKey);
+    } else {
+      coverImageUrl = null;
+    }
 
     return this.filmService.updateFilm(id, updateFilmDto, videoUrl, coverImageUrl);
   }
