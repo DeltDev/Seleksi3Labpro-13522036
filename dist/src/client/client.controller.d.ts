@@ -20,6 +20,6 @@ export declare class ClientController {
         token?: undefined;
     }>;
     showProfilePage(req: any): Promise<{
-        user: any;
+        user: string;
     }>;
 }

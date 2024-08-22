@@ -56,8 +56,8 @@ let ClientController = class ClientController {
         }
     }
     async showProfilePage(req) {
-        const user = req.user;
-        console.log('User from request:', req.user);
+        const user = localStorage.getItem("username");
+        console.log(user);
         return { user };
     }
 };

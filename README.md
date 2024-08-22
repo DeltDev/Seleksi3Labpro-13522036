@@ -2,7 +2,7 @@ Nama: Akbar Al Fattah
 NIM: 13522036
 
 ## Cara menjalankan aplikasi (docker)
-1. Isi kredensial dari file .env yang disediakan 
+1. Isi kredensial dari file .env yang disediakan (Isi DB_HOST dengan mysql_db jika menggunakan docker)
 2. Jalankan docker compose
 ```bash
 # Environment development

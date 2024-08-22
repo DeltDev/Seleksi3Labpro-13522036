@@ -8,6 +8,7 @@ import axios, { type AxiosInstance } from 'axios';
 @Controller()
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
+
   @Get('/')
   @Redirect('/home')
   redirectToHome() {
@@ -63,7 +64,8 @@ export class ClientController {
   @Get('/self-profile')
   @Render('profile.hbs')
   async showProfilePage(@Request() req) {
-    const user = req.user;
+    const user = localStorage.getItem("username");
+    console.log(user);
     return { user };
   }
 }
