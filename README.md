@@ -44,3 +44,12 @@ email: dummy(angka 0 sampai 9 disambung tanpa spasi)@dummy.com
 B06 - Responsive layout
 <br>B08 - SOLID
 <br>B11 - Ember
+
+## Daftar Endpoint yang dibuat
+1. /client-login : untuk login dari sisi client
+2. /register : form pendaftaran
+3. /create-user : membuat user dan disimpan ke database
+4. /home : beranda
+5. /browse-films : daftar film
+6. /self-profile: pengguna yang sedang login
+7. Seluruh endpoint REST API

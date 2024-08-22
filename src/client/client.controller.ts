@@ -60,15 +60,10 @@ export class ClientController {
       throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
-  
-
-  
-
   @Get('/self-profile')
   @Render('profile.hbs')
   async showProfilePage(@Request() req) {
-    const user = req.user; 
-    console.log('User from request:', req.user);
+    const user = req.user;
     return { user };
   }
 }
