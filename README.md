@@ -1,34 +1,9 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
+Nama: Akbar Al Fattah
+NIM: 13522036
 
 ## Cara menjalankan aplikasi (docker)
-
+1. Isi kredensial dari file .env yang disediakan 
+2. Jalankan docker compose
 ```bash
 # Environment development
 $ docker-compose -f docker-compose.dev.yml up
@@ -36,6 +11,10 @@ $ docker-compose -f docker-compose.dev.yml up
 # Environment production
 $ docker-compose -f docker-compose.prod.yml up
 ```
+3. Karena aplikasi ini tidak dideploy, unduh ngrok terlebih dahulu di https://ngrok.com/ jika ingin menggunakan REST API
+4. Tambahkan config.headers['ngrok-skip-browser-warning'] = 'true' agar 
+4. Buka ngrok.exe yang sudah diunduh dan ketik ```ngrok http <nomor port yang dikeluarkan oleh console>``` lalu tekan enter
+5. ngrok akan memberikan tautan. tautan itulah yang akan dimasukkan ke FE Admin sebagai endpoint
 ## Kredensial Akun Default
 Terdapat 20 akun default hasil seeding saat program ini baru mulai dijalankan, 10 akun admin dan 10 akun user reguler.
 Berikut adalah kredensial akun seeding default untuk kebutuhan testing.
@@ -53,22 +32,15 @@ email: dummy(angka 0 sampai 9 disambung tanpa spasi)@dummy.com
  ```
 ## Design Pattern yang Digunakan
 1. Factory Method (implementasi sendiri)
-    <br>Factory method digunakan untuk melakukan seeding user.
+    <br>Factory method digunakan untuk melakukan seeding user. Alasannya adalah untuk memperingkas seeding user denganrole yang sama
 2. Decorator (bawaan dari nestjs)
     <br>Decorator di proyek ini digunakan untuk memberikan kegunaan dari suatu kelas ataupun method
 3. Strategy (bawaan dari nestjs)
     <br> Strategy digunakan untuk menjaga route agar tidak bisa diakses secara sembarangan baik menggunakan JWT Token maupun role dari user.
+4. Builder (implementasi sendiri)
+    <br>Builder digunakan untuk membuat instance film dengan atribut yang nullable
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+## Bonus yang dikerjakan:
+B06 - Responsive layout
+<br>B08 - SOLID
+<br>B11 - Ember

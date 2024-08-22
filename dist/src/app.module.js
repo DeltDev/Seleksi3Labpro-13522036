@@ -24,6 +24,7 @@ const user_service_1 = require("./user/user.service");
 const platform_express_1 = require("@nestjs/platform-express");
 const film_entity_1 = require("./entity/film.entity");
 const s3_module_1 = require("./s3/s3.module");
+const client_module_1 = require("./client/client.module");
 let AppModule = AppModule_1 = class AppModule {
     constructor(userSeeder, userService) {
         this.userSeeder = userSeeder;
@@ -49,6 +50,7 @@ exports.AppModule = AppModule = AppModule_1 = __decorate([
             film_module_1.FilmModule,
             platform_express_1.MulterModule.register(),
             s3_module_1.S3Module,
+            client_module_1.ClientModule,
         ],
         providers: [user_seeder_1.UserSeeder, user_service_1.UserService]
     }),

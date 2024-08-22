@@ -13,6 +13,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Film } from './entity/film.entity';
 import { S3Module } from './s3/s3.module';
+import { ClientModule } from './client/client.module';
 
 
 @Module({
@@ -25,6 +26,7 @@ import { S3Module } from './s3/s3.module';
     FilmModule,
     MulterModule.register(),
     S3Module,
+    ClientModule,
   ],
   providers:[UserSeeder,UserService]
 })

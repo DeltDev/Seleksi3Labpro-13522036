@@ -53,7 +53,7 @@ export class AuthService {
 
     const payload = { username: user.data.username };
     const token = this.jwtService.sign(payload);
-
+    console.log(token)
     const loginResponseDto: LoginResponseDto = {
       username: user.data.username,
       token: token,

@@ -11,21 +11,33 @@ const common_1 = require("@nestjs/common");
 let AllExceptionsFilter = class AllExceptionsFilter {
     catch(exception, host) {
         const ctx = host.switchToHttp();
+        const request = ctx.getRequest();
         const response = ctx.getResponse();
-        const status = exception instanceof common_1.HttpException ? exception.getStatus() : common_1.HttpStatus.INTERNAL_SERVER_ERROR;
+        const status = exception instanceof common_1.HttpException
+            ? exception.getStatus()
+            : common_1.HttpStatus.INTERNAL_SERVER_ERROR;
         let message = 'Internal server error';
         if (exception instanceof common_1.BadRequestException) {
             const responseObj = exception.getResponse();
-            message = Array.isArray(responseObj.message) ? responseObj.message.join(', ') : responseObj.message;
+            message = Array.isArray(responseObj.message)
+                ? responseObj.message.join(', ')
+                : responseObj.message;
         }
         else if (exception instanceof common_1.HttpException) {
             message = exception.message;
         }
-        response.status(status).json({
-            status: 'error',
-            message: `Request failed: ${message}`,
-            data: null,
-        });
+        if (request.accepts('html')) {
+            response.status(status).render('register', {
+                message: `Request failed: ${message}`,
+            });
+        }
+        else {
+            response.status(status).json({
+                status: 'error',
+                message: `Request failed: ${message}`,
+                data: null,
+            });
+        }
     }
 };
 exports.AllExceptionsFilter = AllExceptionsFilter;

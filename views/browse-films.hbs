@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Selamat datang di BandarFilm</title>
+</head>
+<body class="pt-16">
+
+    <!--navbar-->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex-shrink-0">
+        <a href="/" class="text-xl font-bold text-gray-800">BandarFilm</a>
+      </div>
+      <div class="block">
+        <div class="ml-10 flex items-baseline space-x-4">
+          <a href="/home" class="text-gray-800 hover:text-gray-600">Beranda</a>
+          <a href="/register" class="text-gray-800 hover:text-gray-600" id="nav-register">Daftar</a>
+          <a href="/client-login" class="text-gray-800 hover:text-gray-600" id="nav-login">Login</a>
+          <a href="/self-profile" class="text-gray-800 hover:text-gray-600 hidden" id="nav-profile"></a>
+          <a href="#" class="text-gray-800 hover:text-gray-600 hidden" id="nav-logout">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+  const token = localStorage.getItem('token'); 
+  const username = localStorage.getItem('username'); 
+
+  if (token) {
+
+    document.getElementById('nav-register').classList.add('hidden');
+    document.getElementById('nav-login').classList.add('hidden');
+    
+
+    const profileLink = document.getElementById('nav-profile');
+    profileLink.textContent = username;
+    profileLink.classList.remove('hidden');
+    document.getElementById('nav-logout').classList.remove('hidden');
+  }
+
+
+  document.getElementById('nav-logout').addEventListener('click', function() {
+    localStorage.removeItem('token');  
+    localStorage.removeItem('username');  
+    window.location.href = '/client-login';  
+  });
+</script>
+
+
+    
+</body>
+
+<html>

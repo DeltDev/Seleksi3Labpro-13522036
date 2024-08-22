@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login ke BandarFilm</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="pt-16">
+
+<!--navbar-->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex-shrink-0">
+        <a href="/" class="text-xl font-bold text-gray-800">BandarFilm</a>
+      </div>
+      <div class="block">
+        <div class="ml-10 flex items-baseline space-x-4">
+          <a href="/home" class="text-gray-800 hover:text-gray-600">Beranda</a>
+          <a href="/register" class="text-gray-800 hover:text-gray-600" id="nav-register">Daftar</a>
+          <a href="/self-profile" class="text-gray-800 hover:text-gray-600 hidden" id="nav-profile">Profil</a>
+          <a href="#" class="text-gray-800 hover:text-gray-600 hidden" id="nav-logout">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- form login -->
+<div class="flex items-center justify-center min-h-screen"> 
+  <div class="bg-white p-8 rounded-lg shadow-lg w-96 mt-4">
+    <h2 class="text-2xl font-bold mb-6 text-center">Login ke BandarFilm!</h2>
+
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label for="username" class="block text-gray-700">Username</label>
+        <input type="text" name="username" id="username" class="w-full border border-gray-300 p-2 rounded-lg" required>
+      </div>
+
+      <div>
+        <label for="email" class="block text-gray-700">Email</label>
+        <input type="email" name="email" id="email" class="w-full border border-gray-300 p-2 rounded-lg" required>
+      </div>
+
+      <div>
+        <label for="password" class="block text-gray-700">Password</label>
+        <input type="password" name="password" id="password" class="w-full border border-gray-300 p-2 rounded-lg" required>
+      </div>
+
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Login</button>
+    </form>
+  </div>
+</div>
+<!--script masukin token-->
+<script>
+  document.getElementById('loginForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); 
+
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const loginData = {
+      username: username,
+      email: email,
+      password: password
+    };
+
+    try {
+      const response = await fetch('/client-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginData)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('username', username);
+        document.getElementById('nav-register').classList.add('hidden');
+        document.getElementById('nav-profile').classList.remove('hidden');
+        document.getElementById('nav-logout').classList.remove('hidden');
+        window.location.href = '/home';
+      } else {
+        alert('Login failed. Please check your credentials and try again.');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('An error occurred while trying to log in.');
+    }
+  });
+</script>
+
+</body>
+</html>

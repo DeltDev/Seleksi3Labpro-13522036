@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar ke BandarFilm</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="pt-16">
+
+    <!--navbar-->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex-shrink-0">
+        <a href="/" class="text-xl font-bold text-gray-800">BandarFilm</a>
+      </div>
+      <div class="block">
+        <div class="ml-10 flex items-baseline space-x-4">
+          <a href="/home" class="text-gray-800 hover:text-gray-600">Beranda</a>
+          <a href="/register" class="text-gray-800 hover:text-gray-600" id="nav-register">Daftar</a>
+          <a href="/client-login" class="text-gray-800 hover:text-gray-600" id="nav-login">Login</a>
+          <a href="/self-profile" class="text-gray-800 hover:text-gray-600 hidden" id="nav-profile"></a>
+          <a href="#" class="text-gray-800 hover:text-gray-600 hidden" id="nav-logout">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+  const token = localStorage.getItem('token'); 
+  const username = localStorage.getItem('username'); 
+
+  if (token) {
+
+    document.getElementById('nav-register').classList.add('hidden');
+    document.getElementById('nav-login').classList.add('hidden');
+    
+
+    const profileLink = document.getElementById('nav-profile');
+    profileLink.textContent = username;
+    profileLink.classList.remove('hidden');
+    document.getElementById('nav-logout').classList.remove('hidden');
+  }
+
+
+  document.getElementById('nav-logout').addEventListener('click', function() {
+    localStorage.removeItem('token');  
+    localStorage.removeItem('username');  
+    window.location.href = '/client-login';  
+  });
+</script>
+<!--form register-->
+<div class="flex items-center justify-center min-h-screen"> <!-- Changed h-screen to min-h-screen -->
+  <div class="bg-white p-8 rounded-lg shadow-lg w-96 mt-4">
+    <h2 class="text-2xl font-bold mb-6 text-center">Daftar ke BandarFilm!</h2>
+
+    {{#if message}}
+      <p class="mb-4 text-center text-{{#if (eq message "Pendaftaran berhasil")}}green{{else}}red{{/if}}-500">{{message}}</p>
+    {{/if}}
+
+    <form action="/create-user" method="POST" class="space-y-4">
+      <div>
+        <label for="username" class="block text-gray-700">Username</label>
+        <input type="text" name="username" id="username" class="w-full border border-gray-300 p-2 rounded-lg" required>
+      </div>
+
+      <div>
+        <label for="firstName" class="block text-gray-700">First Name</label>
+        <input type="text" name="firstName" id="firstName" class="w-full border border-gray-300 p-2 rounded-lg" required>
+      </div>
+
+      <div>
+        <label for="lastName" class="block text-gray-700">Last Name</label>
+        <input type="text" name="lastName" id="lastName" class="w-full border border-gray-300 p-2 rounded-lg" required>
+      </div>
+
+      <div>
+        <label for="email" class="block text-gray-700">Email</label>
+        <input type="email" name="email" id="email" class="w-full border border-gray-300 p-2 rounded-lg" required>
+      </div>
+
+      <div>
+        <label for="password" class="block text-gray-700">Password</label>
+        <input type="password" name="password" id="password" class="w-full border border-gray-300 p-2 rounded-lg" required>
+      </div>
+
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Register</button>
+    </form>
+  </div
